@@ -1,0 +1,129 @@
+generated: '2026-09-19'
+method: searched
+source: https://aicomglobal.com/.well-known/agent-card.json
+derived_from: openapi/aicomglobal-com-openapi.json
+docs:
+- https://aicomglobal.com/llms.txt
+- https://aicomglobal.com/.well-known/x402.json
+- https://aicomglobal.com/about
+summary: >-
+  aicomglobal's conformance profile is the agent-protocol stack rather than any enterprise or sector
+  standard: an A2A 0.3.0 agent card (graded conformant) whose JSON-RPC endpoint answered a real message/send,
+  an MCP server at protocol version 2025-06-18 registered in the official MCP registry, JSON-RPC 2.0 on both,
+  x402 v2 payment (observed live: HTTP 402 with a base64 payment-required header) settled in USDC on Base
+  (CAIP-2 eip155:8453), an x402 v2 discovery manifest at /.well-known/x402.json plus a Bazaar-compatible
+  discovery feed, Ed25519 signatures over every sold artifact with a published SPKI/PEM key history, RFC 8288
+  Link rel="describedby" on every response, and an ERC-8004-shaped dataHash on verdicts (self-declared). It
+  declares no OAuth/OIDC, no RFC 9457 problem details, no RFC 9116 security.txt, no RFC 9727 API catalog and
+  no RFC 8594 deprecation signalling.
+standards:
+- id: a2a
+  name: Agent2Agent protocol
+  version: '0.3.0'
+  conforms: true
+  evidence: a2a/aicomglobal-com-agent-card.json — protocolVersion "0.3.0", url https://aicomglobal.com/a2a, preferredTransport JSONRPC, capabilities object, skills[] of 55; POST https://aicomglobal.com/a2a message/send returned a completed Task with a DataPart artifact, tasks/get on an unknown id returned A2A -32001 Task not found. Graded conformant in a2a/aicomglobal-com-a2a.yml.
+- id: mcp
+  name: Model Context Protocol
+  version: '2025-06-18'
+  conforms: true
+  evidence: 'POST https://aicomglobal.com/mcp initialize returned protocolVersion "2025-06-18", serverInfo {aicomglobal, 0.15.0}, capabilities.tools.listChanged true; tools/list returned 55 tools with draft-07 inputSchemas. Registered as io.github.moonspacenow-tech/aicomglobal in registry.modelcontextprotocol.io. See mcp/aicomglobal-com-mcp.yml.'
+- id: json-rpc-2.0
+  conforms: true
+  evidence: 'Both /mcp and /a2a answer {"jsonrpc":"2.0", ...} with standard -32601 Method not found for unimplemented methods.'
+- id: x402
+  name: x402 HTTP payment protocol
+  version: v2
+  conforms: true
+  verification: observed
+  evidence: >-
+    POST https://aicomglobal.com/verdict with {} returned HTTP 402 with a `payment-required` header whose
+    base64 payload decodes to {x402Version: 2, resource: {url, description, mimeType, serviceName},
+    accepts: [{scheme: exact, network: eip155:8453, amount: "50000", asset: 0x8335...2913 (USDC), payTo:
+    0x671e...834e, maxTimeoutSeconds: 300, extra: {name: USD Coin, version: "2"}}], extensions: {bazaar:
+    {discoverable: true, category: security, info: {...}, schema: {...}}}}. The OpenAPI declares 402 on all
+    seven paid operations. /.well-known/x402.json declares x402Version 2.
+  domain_standard_signature: true
+  note: >-
+    The contract-level signature for agent commerce in this market — the x402 challenge was observed on the
+    wire, the manifest is published at the well-known path, and the discovery feed at /discovery/resources
+    follows the Bazaar shape. Settlement itself was NOT exercised (this pipeline pays nothing).
+- id: x402-discovery
+  name: x402 Bazaar-compatible discovery
+  conforms: true
+  evidence: https://aicomglobal.com/.well-known/x402.json discovery.resources -> https://aicomglobal.com/discovery/resources (live 200, 937 KB, ?type=http|mcp ?limit ?offset); the agent card's discoveryProvider block; the verdict 402 header's extensions.bazaar block.
+- id: caip-2
+  name: CAIP-2 chain identifier
+  conforms: true
+  evidence: network "eip155:8453" (Base) in /pay, the agent card's paymentsForAgents, the x402 manifest and the live 402 header.
+- id: ed25519-signed-artifacts
+  name: Ed25519 (RFC 8032) signatures with published key history
+  conforms: true
+  evidence: >-
+    https://aicomglobal.com/.well-known/aicom-pubkey — algorithm ed25519, format spki/pem, kid 8ad71ce94418677d,
+    keys[] with validFrom/validTo and a documented verify procedure; the live /.well-known/aicom-beacon and
+    /verdict/sample carry kid + signature over a canonical byte form. The About page documents kid binding and
+    rotation policy.
+  note: Provider-specific canonicalisation (canonicalReceipt / canonicalBeacon), not JWS/COSE; no JWKS endpoint.
+- id: erc-8004
+  name: ERC-8004 (trustless agents) response-hash shape
+  conforms: null
+  verification: self-declared
+  evidence: /.well-known/x402.json says the verdict's "dataHash is shaped as an ERC-8004 resp..." and the aicom_verdict skill carries the tag "erc8004". Not verified against the ERC text here.
+- id: rfc8288
+  name: RFC 8288 Web Linking
+  conforms: true
+  evidence: 'Every response observed (GET /svc, POST /svc/json_repair, POST /verdict) carried Link: <https://aicomglobal.com/.well-known/aicom-beacon>; rel="describedby"; type="application/json".'
+- id: rfc7232-etag
+  name: ETag conditional requests
+  conforms: true
+  evidence: 'W/"..." ETags on GET /svc and POST /svc responses; the changelog (v0.14.0) documents content-addressed ETags with 304 revalidation on the agent card and beacon.'
+- id: json-schema-draft-07
+  conforms: true
+  evidence: Every MCP tool inputSchema declares $schema http://json-schema.org/draft-07/schema#.
+- id: openapi-3.1
+  conforms: true
+  evidence: https://aicomglobal.com/openapi.json — openapi "3.1.0", 19 paths, 24 operations, all with operationId; no components, no securitySchemes, no tags.
+- id: llms-txt
+  conforms: true
+  evidence: https://aicomglobal.com/llms.txt (200, 22.9 KB, H1 + blockquote + H2 sections) and /llms-full.txt (74.8 KB), both listed in sitemap.xml and named as the agent card's documentationUrl.
+- id: sitemap
+  conforms: true
+  evidence: https://aicomglobal.com/sitemap.xml (585 URLs) referenced from robots.txt; robots.txt allows all.
+- id: oauth2
+  conforms: false
+  evidence: No oauth2 securityScheme, no /.well-known/oauth-authorization-server (404), no scopes. Access is a self-issued Bearer apiKey.
+- id: oidc
+  conforms: false
+  evidence: /.well-known/openid-configuration 404 on both hosts.
+- id: rfc9728
+  name: OAuth 2.0 Protected Resource Metadata
+  conforms: false
+  evidence: /.well-known/oauth-protected-resource 404 on the MCP host (aicomglobal.com) and the fallback origin.
+- id: rfc9457
+  name: Problem Details for HTTP APIs
+  conforms: false
+  evidence: 'Errors are {"error": "<code>", "message": "...", "path"?} as application/json; no application/problem+json, no type/title/status/instance. See errors/aicomglobal-com-problem-types.yml.'
+- id: rfc9116
+  name: security.txt
+  conforms: false
+  evidence: /.well-known/security.txt and /security.txt 404; the disclosure policy is HTML at /security.
+- id: rfc9727
+  name: API catalog
+  conforms: false
+  evidence: /.well-known/api-catalog 404.
+- id: apis-json
+  conforms: false
+  evidence: /apis.json, /.well-known/apis.json and /apis.yml 404.
+- id: rfc8594
+  name: Sunset header
+  conforms: false
+  evidence: No deprecated operations, no Sunset or Deprecation headers observed, no versioning policy page.
+- id: idempotency-key
+  name: IETF Idempotency-Key header
+  conforms: false
+  evidence: 'Replay protection is per single-use nonce on x402 actions and an optional idempotency_key field on the MCP/A2A paid tools; no HTTP Idempotency-Key header. See conventions/aicomglobal-com-conventions.yml.'
+domain_standards_checked:
+  note: >-
+    Sector: agent commerce / developer tooling. The regime shortlist for this market is the agent-protocol
+    stack (A2A, MCP, x402, ERC-8004) — all recorded above. No SCIM, OData, OpenRTB, FHIR, FAPI, PSD2, ISO 20022
+    or other sector standard applies, and none is claimed; this is reward-only and nothing is penalised.

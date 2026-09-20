@@ -1,0 +1,53 @@
+generated: '2026-09-19'
+method: searched
+source: https://registry.npmjs.org/aicomglobal
+package_count: 2
+packages:
+- name: aicomglobal
+  registry: npm
+  url: https://www.npmjs.com/package/aicomglobal
+  metadata: https://registry.npmjs.org/aicomglobal
+  official: true
+  kind: mcp-stdio-bridge
+  language: JavaScript (Node, ESM)
+  version: 1.0.1
+  published: '2026-07-03'
+  first_published: '2026-07-03'
+  license: MIT
+  bin: aicomglobal -> bin.mjs
+  dependencies: {'@modelcontextprotocol/sdk': '^1.15.0'}
+  install: npx aicomglobal
+  homepage: https://aicomglobal.com
+  repository: null
+  note: >-
+    Not a language SDK for the REST API — a stdio-to-remote MCP bridge. The npm description and the provider's
+    llms.txt both say it "bridges stdio to the hosted /mcp endpoint" with an optional AICOM_API_KEY env var.
+    First-party by every signal: homepage aicomglobal.com, the same description text as the agent card, and
+    the official MCP registry entry io.github.moonspacenow-tech/aicomglobal lists it as the server's npm
+    package. Two releases in one day (1.0.0 08:44Z, 1.0.1 12:16Z on 2026-07-03) and nothing since; the
+    remote endpoint has moved on to server version 0.15.0, so the bridge's currency does not track the
+    server's, which is expected for a thin bridge.
+- name: aicomglobal-gemini-extension
+  registry: github
+  url: https://github.com/moonspacenow-tech/aicomglobal-gemini-extension
+  official: true
+  kind: gemini-cli-extension
+  version: 1.0.0
+  published: '2026-07-03'
+  install: gemini extensions install https://github.com/moonspacenow-tech/aicomglobal-gemini-extension
+  license: MIT
+  note: >-
+    gemini-extension.json (fetched from the default branch) declares name aicomglobal, version 1.0.0 and
+    mcpServers.aicomglobal.httpUrl https://aicomglobal.com/mcp — a pointer at the hosted server, nothing runs
+    locally. `version:` is the manifest's own field; `published:` is the repo's last push (2026-07-03).
+searched:
+- {registry: npm, query: 'https://registry.npmjs.org/aicomglobal', status: 200, result: 1 package}
+- {registry: pypi, query: 'https://pypi.org/pypi/aicomglobal/json', status: 404}
+- {registry: github-user, query: 'https://api.github.com/users/moonspacenow-tech/repos', status: 200, result: '5 public repos — one first-party (aicomglobal-gemini-extension); the other four are forks of awesome-a2a / awesome-mcp-servers / awesome-x402 / awesome-agentic-commerce lists'}
+- {registry: github, query: 'https://api.github.com/repos/moonspacenow-tech/aicomglobal', status: 404, note: 'The repository the MCP registry''s June entries and the About page ("the code is public on GitHub") point at is not reachable — private or deleted.'}
+- {registry: mcp-registry, query: 'https://registry.modelcontextprotocol.io/v0/servers?search=aicomglobal', status: 200, result: '3 versions of io.github.moonspacenow-tech/aicomglobal; latest 0.9.16 (2026-07-03) with npm package aicomglobal 1.0.1 + streamable-http remote'}
+note: >-
+  No REST client library, CLI or language SDK exists in any registry searched; the documented ways in are raw
+  HTTP (OpenAPI), the remote MCP endpoint (with the npm bridge for stdio-only clients) and A2A. Packages is
+  emitted; SDKs is NOT, because an MCP transport bridge is not an SDK for the API and crediting it as one
+  would overstate what a developer can install.

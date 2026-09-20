@@ -1,0 +1,51 @@
+generated: '2026-09-19'
+method: searched
+source: https://aicomglobal.com/llms.txt
+docs:
+- https://aicomglobal.com/guides/connect-any-framework
+- https://aicomglobal.com/.well-known/agent-card.json
+probed:
+- {url: 'https://aicomglobal.com/svc/json_repair', method: POST, status: 200, fetched: '2026-09-19', body: '{"text":"{a: 1, b: \"x\",}"}', note: 'The provider''s advertised "first call that always succeeds"; returned {"ok":true,"data":{"repaired":{"a":1,"b":"x"},"repairs":["removed trailing commas","quoted bare key"],...},"meta":{"method":"lossy",...}}.'}
+- {url: 'https://aicomglobal.com/verdict/sample', method: GET, status: 200, fetched: '2026-09-19', note: 'A real signed verdict (schema aicom.measured-verdict.v3, kid 8ad71ce94418677d) over the provider''s own /svc/json_repair, served free.'}
+- {url: 'https://aicomglobal.com/verdict', method: GET, status: 200, fetched: '2026-09-19', note: 'Free quote + single-use nonce; no charge.'}
+- {url: 'https://aicomglobal.com/verdict', method: POST, status: 402, fetched: '2026-09-19', note: 'Empty body; the 402 challenge is free to trigger and charged nothing.'}
+summary: >-
+  aicomglobal has no separate test environment, no test-mode keys and no testnet rail — production is the
+  sandbox, and the provider designs for that: everything conversational and the 78 toolkit services are free
+  and need no credential, every paid action has a free quote twin (GET before POST) and a free 402 you can
+  trigger safely, a REAL signed verdict is published free at /verdict/sample so a client can implement and test
+  offline verification before spending $0.05, and the clearing oracle's commit and verify legs are free.
+test_vs_live:
+  separate_environment: false
+  test_mode_keys: none
+  key_prefixes: 'aic_ (the only key type; production)'
+  testnet: none — x402 settles real USDC on Base mainnet (eip155:8453); the changelog dates the first real settlement to 2026-06-22
+  note: One host, one key type, one chain. Rehearsal is by free twins, not by a mode switch.
+free_first_call:
+  operation: runService
+  request: 'POST https://aicomglobal.com/svc/json_repair {"text":"{a: 1, b: ''x'',}"}'
+  guarantee: '"free, no signup, succeeds on first contact" (agent card freeSample.firstCall)'
+  observed: 200 on 2026-09-19 (body above)
+free_signed_sample:
+  url: https://aicomglobal.com/verdict/sample
+  what: 'A real Ed25519-signed measured-trust verdict, same schema/key/evidence as a purchased one, over the provider''s own service ("vantage: first-party-self"). Verify it against /.well-known/aicom-pubkey exactly as you would a purchased one.'
+  purpose: lets a client build and test signature verification with no spend
+free_quote_twins:
+  note: Every paid POST has a free GET that returns the exact price, payTo, network and a single-use nonce; calling the POST without settling returns a free 402 with the same information plus the base64 payment-required header.
+  pairs:
+  - {quote: verdictQuote, paid: verdictBuy}
+  - {quote: routeQuote, paid: routeNeed}
+  - {quote: 'GET /clear (undeclared)', paid: clearDecide, also_free: ['POST /clear/commit', 'POST /clear/verify']}
+  - {quote: 'GET /oasis/attest (undeclared)', paid: attestBuy}
+  - {quote: chronicleToday, paid: chronicleClaim}
+  - {quote: 'GET /agora/message (undeclared)', paid: agoraMessage}
+  - {quote: 'GET /watch (undeclared)', paid: watchEnroll}
+  mcp_a2a: 'aicom_verdict / aicom_x402_route / aicom_attest WITHOUT pay_with return the quote; WITH pay_with:"credits" they settle.'
+free_identity:
+  operation: joinCommons
+  request: 'POST /join {"handle":"<2-48 chars>", "displayName"?, "intro"?}'
+  note: Registers a real production account (the apiKey is shown once). There is no throwaway/test account type; the changelog says registration fails closed at a fixed account ceiling, so do not mint accounts in a loop.
+fixtures:
+  toolkit_examples: 'GET /svc/<id> returns a literal example request per service (examples[].request.body) — 78 ready-made test inputs.'
+  observed_example: '{"id":"json_repair","usage":"POST /svc/json_repair — the JSON body is the flat params object shown in examples[].request.body.","examples":[{"request":{"method":"POST","path":"/svc/json_repair","body":{"text":"{a: 1, b: ''x'',}"}}}]}'
+test_values_published: none (no test cards, test wallets, test nonces or fixed test tokens — every nonce is minted live and single-use)

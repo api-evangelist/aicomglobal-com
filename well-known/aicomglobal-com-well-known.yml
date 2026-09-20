@@ -1,0 +1,163 @@
+generated: '2026-09-19'
+method: probed
+source: >-
+  Live GET probes of the named /.well-known/* path list on aicomglobal.com, www.aicomglobal.com and the
+  documented fallback / MCP-registry origin aicomglobal.onrender.com, 2026-09-19. Every row below is a request
+  that was actually issued; every status is the one returned. The MCP server host is the apex itself
+  (https://aicomglobal.com/mcp), so the RFC 9728 protected-resource probe on the MCP host is the apex row.
+summary:
+  hosts_probed: 3
+  paths_probed: 66
+  documents_served: 5
+  hit_count: 5
+  path_echo_control: passed
+  note: >-
+    aicomglobal serves five well-known documents: the A2A agent card at /.well-known/agent-card.json (and the
+    identical body at the legacy /.well-known/agent.json), an x402 v2 payment/discovery manifest at
+    /.well-known/x402.json, its Ed25519 signing-key history at /.well-known/aicom-pubkey, and a signed
+    "Commons Beacon" at /.well-known/aicom-beacon (also advertised by an RFC 8288 Link rel="describedby"
+    header on every response). None of the standards-track discovery documents this index scores are
+    served: no RFC 9116 security.txt (the disclosure policy lives on the HTML page /security instead), no
+    OAuth 2.0 / OIDC discovery, no RFC 9728 protected-resource metadata for the MCP resource, no RFC 9727
+    API catalog, no APIs.json, no AAuth resource, no ai-plugin, no UCP/ACP manifest. Every miss is a real JSON
+    404 ({"error":"not_found","message":"No route for GET <path>."}), never an SPA shell, and a
+    negative-control path also 404s on both origins, so the 200s are served documents. www.aicomglobal.com
+    301s every path to the apex; aicomglobal.onrender.com is the same application on its origin host and
+    answers identically.
+hosts:
+- host: aicomglobal.com
+  role: Website, API (OpenAPI servers[]), MCP server and A2A JSON-RPC host — one origin
+  documents:
+  - path: /.well-known/agent-card.json
+    status: 200
+    content_type: application/json; charset=utf-8
+    bytes: 52977
+    file: ../a2a/aicomglobal-com-agent-card.json
+    standard: A2A Agent Card (protocolVersion 0.3.0)
+    note: Saved verbatim under a2a/ and graded in a2a/aicomglobal-com-a2a.yml (conformant).
+  - path: /.well-known/agent.json
+    status: 200
+    content_type: application/json; charset=utf-8
+    bytes: 52977
+    file: ../a2a/aicomglobal-com-agent-card.json
+    standard: A2A Agent Card (legacy pre-0.3 path)
+    note: Identical body to agent-card.json; the provider serves both paths rather than redirecting.
+  - path: /.well-known/x402.json
+    status: 200
+    content_type: application/json; charset=UTF-8
+    bytes: 12441
+    file: aicomglobal-com-x402.json
+    standard: x402 v2 payment manifest (x402Version 2, resources[], discovery.resources)
+    note: Names the priced resources (/verdict, /clear/attest, /oasis/attest, /chronicle/claim, /route, /agora/message, /watch), the unpriced /mcp resource, and the Bazaar-compatible discovery feed at /discovery/resources.
+  - path: /.well-known/aicom-pubkey
+    status: 200
+    content_type: application/json; charset=utf-8
+    bytes: 749
+    file: aicomglobal-com-aicom-pubkey.json
+    standard: provider-specific (Ed25519 SPKI/PEM public key + key history, kid 8ad71ce94418677d, validFrom 2026-06-16)
+    note: The verification key for every signed artifact the provider sells; not a JWKS (no /.well-known/jwks.json is served).
+  - path: /.well-known/aicom-beacon
+    status: 200
+    content_type: application/json; charset=utf-8
+    bytes: 1556
+    file: aicomglobal-com-aicom-beacon.json
+    standard: provider-specific (signed, hourly-bucketed "reliability weather" datum; schema aicom.commons-beacon.v1)
+    note: Perishable — validUntil is one hour after asOf; the saved copy is the 2026-09-20T00:00Z bucket. Also served at /api/beacon.
+  - path: /.well-known/security.txt
+    status: 404
+    note: The vulnerability-disclosure policy exists but only as HTML at /security (email, 48-hour acknowledgement, safe harbour). No RFC 9116 file.
+  - path: /security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    note: This is also the MCP resource host (https://aicomglobal.com/mcp); no RFC 9728 metadata is served for it. The MCP server's account credential is a Bearer apiKey issued by the provider itself, not OAuth.
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/api-catalog.json
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/ucp.json
+    status: 404
+  - path: /.well-known/acp.json
+    status: 404
+  - path: /.well-known/aauth-resource.json
+    status: 404
+  - path: /.well-known/apis.json
+    status: 404
+  - path: /apis.json
+    status: 404
+  - path: /apis.yml
+    status: 404
+  - path: /.well-known/mcp.json
+    status: 404
+  - path: /.well-known/mcp/server-card.json
+    status: 404
+  - path: /llms.txt
+    status: 200
+    content_type: text/plain; charset=utf-8
+    bytes: 22932
+    file: ../llms/aicomglobal-com-llms.txt
+    note: Not a well-known path; recorded here because it is the document the agent card names as documentationUrl.
+  - path: /.well-known/aicomglobal-com-negative-control-bbe0879a.json
+    status: 404
+    control: negative
+    note: A path that cannot exist. Its 404 proves the host does not echo or catch-all /.well-known/* requests.
+- host: www.aicomglobal.com
+  role: Alias — 301 to the apex for every path
+  documents:
+  - {path: /.well-known/agent-card.json, status: 301, redirect: 'https://aicomglobal.com/.well-known/agent-card.json'}
+  - {path: /.well-known/agent.json, status: 301}
+  - {path: /.well-known/security.txt, status: 301}
+  - {path: /.well-known/openid-configuration, status: 301}
+  - {path: /.well-known/oauth-authorization-server, status: 301}
+  - {path: /.well-known/oauth-protected-resource, status: 301}
+  - {path: /.well-known/api-catalog, status: 301}
+  - {path: /.well-known/ai-plugin.json, status: 301}
+  - {path: /openapi.json, status: 301}
+  - {path: /llms.txt, status: 301}
+  note: Statuses are the first hop; following the redirect lands on the apex rows above.
+- host: aicomglobal.onrender.com
+  role: Origin / fallback host named in llms.txt, the agent card's install block and the MCP registry's earlier entries
+  documents:
+  - path: /.well-known/agent-card.json
+    status: 200
+    content_type: application/json; charset=utf-8
+    bytes: 52977
+    file: ../a2a/aicomglobal-com-agent-card.json
+    note: Identical card to the apex.
+  - path: /.well-known/x402.json
+    status: 200
+    bytes: 12441
+    file: aicomglobal-com-x402.json
+    note: Identical to the apex document.
+  - path: /.well-known/aicom-pubkey
+    status: 200
+    bytes: 749
+    file: aicomglobal-com-aicom-pubkey.json
+  - path: /.well-known/aicom-beacon
+    status: 200
+    bytes: 1556
+    file: aicomglobal-com-aicom-beacon.json
+  - {path: /.well-known/security.txt, status: 404}
+  - {path: /security.txt, status: 404}
+  - {path: /.well-known/openid-configuration, status: 404}
+  - {path: /.well-known/oauth-authorization-server, status: 404}
+  - {path: /.well-known/oauth-protected-resource, status: 404, note: 'Also the fallback MCP host (https://aicomglobal.onrender.com/mcp); no RFC 9728 metadata.'}
+  - {path: /.well-known/api-catalog, status: 404}
+  - {path: /.well-known/api-catalog.json, status: 404}
+  - {path: /.well-known/ucp.json, status: 404}
+  - {path: /.well-known/acp.json, status: 404}
+  - {path: /.well-known/aauth-resource.json, status: 404}
+  - {path: /.well-known/apis.json, status: 404}
+  - {path: /apis.json, status: 404}
+  - {path: /apis.yml, status: 404}
+  - {path: /.well-known/mcp/server-card.json, status: 404}
+  - {path: /openapi.json, status: 200, bytes: 11313, note: 'Identical OpenAPI to the apex; the servers[] entry inside it still says https://aicomglobal.com.'}
+  - path: /.well-known/aicomglobal-com-negative-control-bbe0879a.json
+    status: 404
+    control: negative

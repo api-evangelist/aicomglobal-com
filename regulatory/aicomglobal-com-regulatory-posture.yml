@@ -1,0 +1,113 @@
+generated: '2026-09-19'
+method: searched
+probe: true
+source: https://aicomglobal.com/privacy
+operator:
+  jurisdiction: United Kingdom ("aicomglobal is operated from the United Kingdom; the data controller is the aicomglobal operator" — privacy policy; "an independent, founder-operated service (UK)" — about page)
+  contact: moonspacenow@gmail.com
+signals:
+  data_subject_request:
+    url: https://aicomglobal.com/privacy
+    section: 'Your data rights (UK / EU GDPR)'
+    channel: moonspacenow@gmail.com
+    stated_sla: 'Email us and we will respond within one calendar month.'
+    rights_named: [access, rectify, erase, restrict, object, data portability]
+    escalation: UK Information Commissioner's Office (ico.org.uk) or your local EU supervisory authority
+    evidence:
+    - source: https://aicomglobal.com/privacy
+      http_status: 200
+      fetched: '2026-09-19'
+      quote: >-
+        "You have the right to access, rectify, erase, restrict, or object to the processing of your personal
+        data, and to data portability. Email us and we will respond within one calendar month. ... Where
+        erasure of sealed content is requested, we remove it from all public surfaces; the public ledger then
+        carries only the seal (a hash), not the content."
+    note: >-
+      A documented request process with a channel, a response period, named lawful bases (contract,
+      legitimate interests) and an honest carve-out for the append-only Annal. It is a section of the privacy
+      policy, not a dedicated intake page (/privacy/requests was not probed as a separate path; no such link
+      exists on the site), and there is no API endpoint for it.
+  subprocessors:
+    url: https://aicomglobal.com/privacy
+    section: 'Payments / Third parties / Your data rights'
+    dated: '2026-06-24'
+    entries:
+    - {vendor: Render, purpose: hosting, location: 'EU (Frankfurt)'}
+    - {vendor: Supabase, purpose: 'data store (Postgres)', location: EU region}
+    - {vendor: Stripe, purpose: 'card payments for human/business products; processes card data under its own policy — aicomglobal does not store card details'}
+    - {vendor: Coinbase CDP, purpose: 'x402 facilitator for on-chain USDC settlement (named on /pay and in the agent card, not on the privacy page)'}
+    evidence:
+    - source: https://aicomglobal.com/privacy
+      http_status: 200
+      fetched: '2026-09-19'
+      quote: '"Data store: Supabase (Postgres). Hosting: Render." ... "Hosting is in the EU (Render, Frankfurt); the data store is Supabase (Postgres, EU region)." ... "Stripe processes any card data under its own policy; aicomglobal does not store card details."'
+    - source: https://aicomglobal.com/legal/subprocessors
+      http_status: 404
+      fetched: '2026-09-19'
+    note: >-
+      Named processors with purposes and (for hosting and storage) locations, inside a dated privacy policy.
+      Not a standalone subprocessor list, not a change-notification list, and the privacy page itself carries
+      an internal inconsistency — one paragraph says nothing about location while the GDPR section places
+      hosting in Frankfurt.
+  data_residency:
+    url: https://aicomglobal.com/privacy
+    regions: [eu]
+    selectable: false
+    evidence:
+    - source: https://aicomglobal.com/privacy
+      http_status: 200
+      fetched: '2026-09-19'
+      quote: '"Hosting is in the EU (Render, Frankfurt); the data store is Supabase (Postgres, EU region)."'
+    note: >-
+      A published statement of where data is processed and stored (one region, EU), not a customer-selectable
+      residency control. Recorded as the residency signal the provider actually publishes; on-chain payment
+      records are, by their nature, global.
+  notice_and_action:
+    url: https://aicomglobal.com/claim
+    also: https://aicomglobal.com/probe-policy
+    mechanism: 'Web form at /claim (claim | contest a figure | opt out) and POST /dispute {"subject":"https://your.endpoint"} or {"host":"your.host"}; MCP/A2A aicom_report flags a misleading or scam listing'
+    stated_sla: 'Opt-out: "We honour it immediately." Claims: "Within 10 business days we verify ownership (DNS TXT or domain link)."'
+    evidence:
+    - source: https://aicomglobal.com/probe-policy
+      http_status: 200
+      fetched: '2026-09-19'
+      quote: '"This is your service and you want it removed from the Index and from probing? Email moonspacenow@gmail.com, or POST your endpoint or host to /dispute ({"subject":"https://your.endpoint"} or {"host":"your.host"}). We honour it immediately."'
+    - source: https://aicomglobal.com/claim
+      http_status: 200
+      fetched: '2026-09-19'
+      quote: '"Claim, correct, or remove ... What do you want to do? Claim this listing (take ownership — free) / Contest a figure (we re-check + correct) / Opt out (remove from index + probing)"'
+    note: >-
+      aicomglobal indexes and ranks third parties (the x402 Reliability Index lists ~988 live Bazaar services
+      and ~14,685 catalogued), so a right of reply over that content is the substance this signal asks for:
+      a documented channel, a stated turnaround, no payment required. It concerns indexed service listings,
+      not user-generated posts; the Agora's house rules say undisclosed astroturfing "gets removed" but publish
+      no reporting route for posts beyond aicom_report.
+absent:
+  sbom: 'Not published. /security names a dependency reachability analysis in SECURITY.md, but the repository is not publicly reachable (github.com/moonspacenow-tech/aicomglobal 404) and no CycloneDX/SPDX document is served. Search only — nothing derived.'
+  support_lifetime: No support period or versioning policy page (see lifecycle/).
+  accessibility_conformance: '/accessibility 404; no VPAT or WCAG statement found.'
+  training_data_summary: Not published.
+  ai_transparency: >-
+    Not recorded. The site discloses that its OWN accounts are marked house:true and that the operator is a
+    human principal, and its Terms say trust signals are "observations, not guarantees" — but nothing states
+    whether any output is AI-generated or whether users interact with an AI system, which is the substance
+    this signal requires.
+  global_privacy_control: No published statement; not probed by header (by rule).
+  incident_notification: No DPA and no breach-notification commitment published.
+  age_assurance: Not published.
+  transparency_report: >-
+    Not published. /probe-policy is a measurement-methodology and right-of-reply page, not a report of
+    requests received or actions taken.
+  exit_assistance: >-
+    Not published. The Terms state prepaid credit is non-refundable and non-transferable; Oasis content is
+    "public, permanent" and "cannot be unsaid"; no export or portability tooling beyond the GDPR portability
+    right named on the privacy page.
+probed_paths:
+- {url: 'https://aicomglobal.com/accessibility', status: 404}
+- {url: 'https://aicomglobal.com/legal/subprocessors', status: 404}
+- {url: 'https://aicomglobal.com/privacy', status: 200}
+- {url: 'https://aicomglobal.com/terms', status: 200}
+- {url: 'https://aicomglobal.com/security', status: 200}
+- {url: 'https://aicomglobal.com/probe-policy', status: 200}
+- {url: 'https://aicomglobal.com/claim', status: 200}
+- {url: 'https://aicomglobal.com/about', status: 200}

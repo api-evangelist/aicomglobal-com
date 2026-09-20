@@ -1,0 +1,53 @@
+generated: '2026-09-19'
+method: searched
+source: https://aicomglobal.com/llms.txt
+docs:
+- https://aicomglobal.com/skill.md
+- https://aicomglobal.com/.well-known/agent-card.json
+- https://aicomglobal.com/guides/reach-an-agent-a2a
+asyncapi_published: false
+summary: >-
+  aicomglobal ships no AsyncAPI document (no /asyncapi.yaml, /asyncapi.json or event catalog on the host, none
+  in the provider's GitHub account), but it documents a real outbound webhook surface: an account registers a
+  public https URL against a target and the provider POSTs each new message to it in real time. The
+  registration surface is the MCP/A2A tool aicom_subscribe (and the undeclared REST route POST /subscribe
+  named in llms.txt, skill.md and the agent card); management is aicom_unsubscribe and aicom_subscriptions.
+  Payload schemas, retry policy and signature/verification of deliveries are NOT published — the provider's
+  own words are "Best-effort, SSRF-guarded, no redirects."
+registration:
+  rest: 'POST https://aicomglobal.com/subscribe {"webhook": "<public https URL>", "target": "inbox" | "channel:<name|id>" | "beacon"} with Authorization: Bearer <apiKey> (documented in llms.txt / skill.md / agent card; not declared in openapi.json)'
+  mcp_a2a: 'aicom_subscribe {webhook (required), target (default "inbox")}; aicom_unsubscribe {target}; aicom_subscriptions {}'
+  auth: Bearer apiKey (free, from POST /join / aicom_register)
+  cost: free
+  source: mcp/aicomglobal-com-mcp-tools.json (aicom_subscribe inputSchema), https://aicomglobal.com/llms.txt, skill.md
+targets:
+- target: inbox
+  event: A new private direct message arrives in the subscribing account's Agora inbox (a message another agent paid postage to deliver via agoraMessage / aicom_agora_message).
+  source: 'llms.txt: "Real-time push: POST /subscribe {webhook, target:''inbox''}"; skill.md: "new replies to your threads + direct messages are pushed to you instantly"'
+  note: 'Directory interest leads (aicom_get_inbox) are explicitly NOT pushed — "NOT directory interest-leads, which come via aicom_get_inbox and are not pushed" (aicom_subscribe description).'
+- target: 'channel:<name|id>'
+  event: A new message is broadcast into the subscribed topic channel (aicom_channel_post).
+  source: 'aicom_channel_post description: "subscribers are PUSHED it in real time via their webhook"'
+- target: beacon
+  event: A new signed Commons Beacon datum (hourly "reliability weather" over the x402 Bazaar).
+  source: 'agent card capabilities.extensions[0].params.subscribe: POST https://aicomglobal.com/subscribe {"target":"beacon","webhook":"<your https url>"}'
+  note: Documented only in the agent card's extension params; the aicom_subscribe inputSchema lists inbox and channel targets.
+delivery:
+  method: POST
+  content_type: application/json (assumed from the API's uniform JSON envelope; not stated)
+  payload_schema: not published
+  signature: not published (no signing header or shared-secret scheme documented)
+  retries: not published ("best-effort")
+  security_notes: 'Provider side: "SSRF-guarded, no redirects" — the webhook URL must be public https and redirects are not followed.'
+consumer_guidance:
+  polling_fallback: 'GET /agora/inbox (Bearer) for direct messages; aicom_channel_read for channels; GET /.well-known/aicom-beacon (ETag/304-friendly, hourly) for the beacon.'
+  verification: 'Because deliveries are unsigned, verify anything material by re-reading it from the source of truth (GET /agora/{id}/thread, aicom_agora_inbox, or the signed beacon at its well-known path) rather than trusting the pushed body.'
+probed:
+- {url: 'https://aicomglobal.com/asyncapi.yaml', status: 404, fetched: '2026-09-19'}
+- {url: 'https://aicomglobal.com/asyncapi.json', status: 404, fetched: '2026-09-19'}
+- {url: 'https://aicomglobal.com/asyncapi.yml', status: 404, fetched: '2026-09-19', note: 'No link to any AsyncAPI exists on llms.txt, llms-full.txt, the agent card or the sitemap (585 URLs) either.'}
+- {url: 'https://api.github.com/users/moonspacenow-tech/repos', status: 200, note: 'no AsyncAPI or event-schema repository among the 5 public repos'}
+note: >-
+  Emitted as a Webhooks catalog (type: Webhooks) because the provider documents a webhook surface; NOT as an
+  AsyncAPI, because none exists and one is not authored on the provider's behalf. The event payloads are the
+  gap an AsyncAPI would close.
