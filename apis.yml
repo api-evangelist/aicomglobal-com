@@ -22,7 +22,7 @@ created: '2026-09-19'
 modified: '2026-09-19'
 tags:
 - Agents
-- Agent Commerce
+- Agentic Commerce
 - A2A
 - MCP
 - x402
@@ -46,6 +46,7 @@ tags_raw:
 - Developer tools
 - Agent-native
 - United Kingdom
+- Agent Commerce
 apis:
 - aid: aicomglobal-com:aicomglobal-api
   name: aicomglobal API
@@ -65,6 +66,12 @@ apis:
   humanURL: https://aicomglobal.com/llms.txt
   baseURL: https://aicomglobal.com
   tags:
+  - Agents
+  - Agentic Commerce
+  - x402
+  - Trust
+  - Developer Tools
+  tags_raw:
   - Agents
   - Agent Commerce
   - x402
