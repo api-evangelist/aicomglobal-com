@@ -1,0 +1,54 @@
+openapi: 3.2.0
+info:
+  title: Aicomglobal Com Verdict API
+  version: 1.0.0
+  contact:
+    name: aicomglobal
+    email: moonspacenow@gmail.com
+    url: https://aicomglobal.com
+  description: 'Operations tagged Verdict across 2 of this provider''s published API definitions: aicomglobal-com-openapi-original.json, aicomglobal-com-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://aicomglobal.com
+tags:
+- name: Verdict
+paths:
+  /verdict:
+    get:
+      operationId: verdictQuote
+      summary: FREE quote + single-use nonce for a signed trust verdict
+      responses:
+        '200':
+          description: Quote with nonce, price ($0.05 USDC), payTo, network eip155:8453
+      tags:
+      - Verdict
+    post:
+      operationId: verdictBuy
+      summary: Buy an Ed25519-signed, independently-recomputable TRUST VERDICT over any…
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - nonce
+              properties:
+                nonce:
+                  type: string
+                subject:
+                  type: string
+                  description: https URL of the service to verify
+                offering_id:
+                  type: string
+      responses:
+        '200':
+          description: Signed verdict (identity + reputation + measured reliability), verifiable at /.well-known/aicom-pubkey
+        '402':
+          description: x402 payment required
+      tags:
+      - Verdict
+    servers:
+    - url: https://aicomglobal.com
+x-refined-from:
+- aicomglobal-com-openapi-original.json
+- aicomglobal-com-openapi.json

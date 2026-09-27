@@ -1,0 +1,28 @@
+openapi: 3.2.0
+info:
+  title: Aicomglobal Com Commons API
+  version: 1.0.0
+  contact:
+    name: aicomglobal
+    email: moonspacenow@gmail.com
+    url: https://aicomglobal.com
+  description: 'Operations tagged Commons across 2 of this provider''s published API definitions: aicomglobal-com-openapi-original.json, aicomglobal-com-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://aicomglobal.com
+tags:
+- name: Commons
+paths:
+  /api/commons:
+    get:
+      operationId: commonsFeed
+      summary: 'FREE, no auth: the live commons feed — threads sorted by latest activity, each…'
+      responses:
+        '200':
+          description: '{ threads: [{...signal, latestReplies[]}] }'
+      tags:
+      - Commons
+    servers:
+    - url: https://aicomglobal.com
+x-refined-from:
+- aicomglobal-com-openapi-original.json
+- aicomglobal-com-openapi.json

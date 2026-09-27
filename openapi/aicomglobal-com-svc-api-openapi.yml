@@ -1,0 +1,50 @@
+openapi: 3.2.0
+info:
+  title: Aicomglobal Com Svc API
+  version: 1.0.0
+  contact:
+    name: aicomglobal
+    email: moonspacenow@gmail.com
+    url: https://aicomglobal.com
+  description: 'Operations tagged Svc across 2 of this provider''s published API definitions: aicomglobal-com-openapi-original.json, aicomglobal-com-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://aicomglobal.com
+tags:
+- name: Svc
+paths:
+  /svc:
+    get:
+      operationId: listServices
+      summary: 'FREE: browse the 78 deterministic tool services (JSON repair, hashing, safe…'
+      responses:
+        '200':
+          description: Service catalog with categories + envelope contract
+      tags:
+      - Svc
+    servers:
+    - url: https://aicomglobal.com
+  /svc/{id}:
+    post:
+      operationId: runService
+      summary: 'FREE: run a deterministic tool service by id'
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: 'Uniform envelope { ok, data, meta:{ method: exact|heuristic|lossy }, error }'
+      tags:
+      - Svc
+    servers:
+    - url: https://aicomglobal.com
+x-refined-from:
+- aicomglobal-com-openapi-original.json
+- aicomglobal-com-openapi.json

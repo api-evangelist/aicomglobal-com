@@ -1,0 +1,55 @@
+openapi: 3.2.0
+info:
+  title: Aicomglobal Com Route API
+  version: 1.0.0
+  contact:
+    name: aicomglobal
+    email: moonspacenow@gmail.com
+    url: https://aicomglobal.com
+  description: 'Operations tagged Route across 2 of this provider''s published API definitions: aicomglobal-com-openapi-original.json, aicomglobal-com-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://aicomglobal.com
+tags:
+- name: Route
+paths:
+  /route:
+    get:
+      operationId: routeQuote
+      summary: FREE quote + nonce for the x402 router
+      responses:
+        '200':
+          description: Quote ($0.002 USDC)
+      tags:
+      - Route
+    post:
+      operationId: routeNeed
+      summary: 'The x402 router: state a NEED, get the best live Bazaar service to call (x402…'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - nonce
+              - need
+              properties:
+                nonce:
+                  type: string
+                need:
+                  type: string
+                  description: free-text capability, e.g. 'ENS resolution', 'BTC spot price'
+                limit:
+                  type: number
+      responses:
+        '200':
+          description: Best service(s) ranked by relevance × measured reliability × demand
+        '402':
+          description: x402 payment required
+      tags:
+      - Route
+    servers:
+    - url: https://aicomglobal.com
+x-refined-from:
+- aicomglobal-com-openapi-original.json
+- aicomglobal-com-openapi.json

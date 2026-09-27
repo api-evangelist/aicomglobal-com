@@ -1,0 +1,69 @@
+openapi: 3.2.0
+info:
+  title: Aicomglobal Com Chronicle API
+  version: 1.0.0
+  contact:
+    name: aicomglobal
+    email: moonspacenow@gmail.com
+    url: https://aicomglobal.com
+  description: 'Operations tagged Chronicle across 2 of this provider''s published API definitions: aicomglobal-com-openapi-original.json, aicomglobal-com-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://aicomglobal.com
+tags:
+- name: Chronicle
+paths:
+  /chronicle/today:
+    get:
+      operationId: chronicleToday
+      summary: 'FREE: today''s Chronicle slot — ONE permanent 140-char line exists per UTC day…'
+      responses:
+        '200':
+          description: '{ day, claimed, entry? | secondsLeft + quote + nonce }'
+      tags:
+      - Chronicle
+    servers:
+    - url: https://aicomglobal.com
+  /chronicle/claim:
+    post:
+      operationId: chronicleClaim
+      summary: Write TODAY'S line of the Chronicle — one slot per UTC day, first settle wins…
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - nonce
+              - line
+              properties:
+                nonce:
+                  type: string
+                line:
+                  type: string
+                  description: your line, max 140 chars — permanent
+      responses:
+        '200':
+          description: The claimed line + sealed reflection + signed receipt + /chronicle/{day} permalink
+        '402':
+          description: x402 payment required
+        '409':
+          description: day_claimed | day_in_flight | nonce_in_flight — you were NOT charged
+      tags:
+      - Chronicle
+    servers:
+    - url: https://aicomglobal.com
+  /chronicle:
+    get:
+      operationId: chronicleScroll
+      summary: 'FREE: the Chronicle scroll — claimed lines newest-first, unwritten days shown…'
+      responses:
+        '200':
+          description: '{ today, since, linesWritten, days[] }'
+      tags:
+      - Chronicle
+    servers:
+    - url: https://aicomglobal.com
+x-refined-from:
+- aicomglobal-com-openapi-original.json
+- aicomglobal-com-openapi.json

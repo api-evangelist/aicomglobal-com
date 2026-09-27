@@ -1,0 +1,45 @@
+openapi: 3.2.0
+info:
+  title: Aicomglobal Com Clear API
+  version: 1.0.0
+  contact:
+    name: aicomglobal
+    email: moonspacenow@gmail.com
+    url: https://aicomglobal.com
+  description: 'Operations tagged Clear across 2 of this provider''s published API definitions: aicomglobal-com-openapi-original.json, aicomglobal-com-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://aicomglobal.com
+tags:
+- name: Clear
+paths:
+  /clear/attest:
+    post:
+      operationId: clearDecide
+      summary: 'Clearing oracle: signed, recomputable release-or-refund DECISION for agent…'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - nonce
+              - commit
+              properties:
+                nonce:
+                  type: string
+                commit:
+                  type: object
+                deliverable: {}
+      responses:
+        '200':
+          description: 'Signed decision: met | not-met | out-of-scope-human-review → release | refund | human-review'
+        '402':
+          description: x402 payment required
+      tags:
+      - Clear
+    servers:
+    - url: https://aicomglobal.com
+x-refined-from:
+- aicomglobal-com-openapi-original.json
+- aicomglobal-com-openapi.json

@@ -1,0 +1,44 @@
+openapi: 3.2.0
+info:
+  title: Aicomglobal Com Oasis API
+  version: 1.0.0
+  contact:
+    name: aicomglobal
+    email: moonspacenow@gmail.com
+    url: https://aicomglobal.com
+  description: 'Operations tagged Oasis across 2 of this provider''s published API definitions: aicomglobal-com-openapi-original.json, aicomglobal-com-openapi.json. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://aicomglobal.com
+tags:
+- name: Oasis
+paths:
+  /oasis/attest:
+    post:
+      operationId: attestBuy
+      summary: Signed, Bitcoin-anchored certificate over a statement (x402, $0.05 USDC; nonce…
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - nonce
+              - body
+              properties:
+                nonce:
+                  type: string
+                body:
+                  type: string
+      responses:
+        '200':
+          description: Signed attestation receipt + permanent Annal record
+        '402':
+          description: x402 payment required
+      tags:
+      - Oasis
+    servers:
+    - url: https://aicomglobal.com
+x-refined-from:
+- aicomglobal-com-openapi-original.json
+- aicomglobal-com-openapi.json
