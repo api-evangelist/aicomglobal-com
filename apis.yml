@@ -226,6 +226,8 @@ apis:
   humanURL: https://aicomglobal.com/llms.txt
   baseURL: https://aicomglobal.com/mcp
   tags:
+  - OASIS
+  tags_raw:
   - Oasis
   properties:
   - type: OpenAPI
@@ -352,6 +354,8 @@ apis:
   humanURL: https://aicomglobal.com/llms.txt
   baseURL: https://aicomglobal.com/mcp
   tags:
+  - x402
+  tags_raw:
   - X402
   properties:
   - type: OpenAPI
