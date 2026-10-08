@@ -103,3 +103,88 @@ credit_packs:
   note: 'Prepaid credit for in-band (MCP/A2A) settlement. "starter" is $5 USDC per the live GET /verdict noWalletPath; a "builder" pack exists (GET /credits/x402/builder) with an unpublished amount. Credit is closed-loop, non-transferable and non-refundable.'
   packs: [{id: starter, price: 5, currency: USDC}, {id: builder, price: null, currency: USDC, note: amount not published on any surface fetched}]
 refunds: see conventions/aicomglobal-com-conventions.yml reversibility (Terms "Refunds" section, 14-day windows)
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - free
+  - subscription
+  units: []
+  plans:
+  - name: Free forever
+    access: other
+    model: free
+    model_how: derived
+    units: []
+    periods:
+    - other
+  - name: Signed measured trust verdict (aicom_verdict)
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - other
+  - name: Clearing decision (aicom_clear)
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - other
+  - name: Anchored attestation (aicom_attest)
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - other
+  - name: Chronicle line (aicom_chronicle)
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - other
+  - name: x402 router (aicom_x402_route)
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - other
+  - name: Direct-message postage (aicom_agora_message)
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - other
+  - name: Seal a Lab experiment result (aicom_experiment_publish)
+    access: other
+    model: free
+    model_how: derived
+    units: []
+    periods:
+    - other
+  - name: Reliability Watch — standard
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - month
+  - name: Reliability Watch — pro
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - month
+  - name: Account verification (aicom_request_verification)
+    access: other
+    model: subscription
+    model_how: derived
+    units: []
+    periods:
+    - year
