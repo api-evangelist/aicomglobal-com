@@ -1,0 +1,32 @@
+# Front Door AI Index — aicomglobal-com — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: aicomglobal-com
+  lexicon_version: '1.0'
+  probed_at: '2026-09-25'
+  host: aicomglobal.com
+  final_host: aicomglobal.com
+  ownership: own
+  owner: aicomglobal-com
+  shares_host_with: null
+  inherited_from: null
+  alias_of: null
+  verdict: scored
+  score: 23
+  band: 6
+  band_label: dominant
+  host_score: 23
+  density: 10.83
+  words: 2123
+  tiers:
+    agentic: 9
+    core: 14
+    model: 0
+  ambiguous: 29
+  top_terms:
+    agent: 29
+    AI: 14
+    AI agent: 6
+    MCP: 2
+    AI assistant: 1
