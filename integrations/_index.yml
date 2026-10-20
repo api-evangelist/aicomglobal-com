@@ -19,6 +19,28 @@
     registered_name: io.github.moonspacenow-tech/aicomglobal
     register_id: io.github.moonspacenow-tech/aicomglobal
     detected_by: sweep-agent-tools.py
-    detected: '2026-10-15'
+    detected: '2026-10-19'
+  status: not-a-workflow
+  arazzo: null
+- slug: aicomglobal-com-a2a-protocol-own-agent-card
+  label: A2A protocol (own Agent Card)
+  partner_name: A2A protocol (own Agent Card)
+  category: A2A agent
+  type: register
+  channel: provider-built
+  evidence: https://aicomglobal.com/.well-known/agent-card.json
+  source: edge
+  relationship: compatible
+  contract_reference:
+    register: provider's own /.well-known/agent-card.json
+    spec_file: null
+    standard: A2A
+    role: a2a-agent-card
+    registered_name: aicomglobal
+    organization: aicomglobal
+    matched_domain: aicomglobal.com
+    matched_by: own-domain
+    detected_by: sweep-ai-agents.py
+    detected: '2026-10-20'
   status: not-a-workflow
   arazzo: null
